@@ -5,6 +5,8 @@
 
 const fs = require('fs');
 
+const Sequelize = require('sequelize');
+
 const { Client, Collection, Intents } = require('discord.js');
 // New Discord client
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
@@ -13,6 +15,23 @@ client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 // Events are stored in /events in separate files
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
+
+// Initialise database
+const sequelize = new Sequelize({
+	host: 'localhost',
+	dialect: 'sqlite',
+	logging: false,
+	storage: 'database.sqlite',
+});
+
+// Initialise the messages table
+const Messages = sequelize.define('messages', {
+	tag: {
+		type: Sequelize.STRING,
+		unique: true,
+	},
+	content: Sequelize.TEXT,
+});
 
 // Load environment variables from .env
 // Must contain:
@@ -36,6 +55,12 @@ for (const file of eventFiles) {
 		client.on(event.name, (...args) => event.execute(...args));
 	}
 }
+
+// Save custom data to the client instance
+client.DICED = {
+	database: sequelize,
+	messages_scheme: Messages,
+};
 
 // Discord login
 client.login(process.env.TOKEN);
