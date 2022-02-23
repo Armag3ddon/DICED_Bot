@@ -6,7 +6,6 @@ const DiscordLog = require('./log.js');
 
 module.exports = {
 	collector(interaction, messages, customId, onClick) {
-		console.dir(interaction.channel);
 		const collector = interaction.channel.createMessageComponentCollector({ componentType: 'BUTTON', time: 60000, max: 1 });
 
 		collector.on('collect', async i => {
