@@ -1,6 +1,7 @@
 /* discord.js ready event will fire when the bot is started and a connection is established */
 
 const Social = require('../help/social.js');
+const DiscordLog = require('../help/log.js');
 
 module.exports = {
 	name: 'ready',
@@ -16,5 +17,8 @@ module.exports = {
 		// Start social media scraping
 		Social.checkSocial(client);
 		console.log('Begun social media scraping.');
+
+		// Started
+		DiscordLog.log(client, 'Der Bot ist gestartet.');
 	},
 };
