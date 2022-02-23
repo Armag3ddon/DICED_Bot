@@ -24,13 +24,22 @@ const sequelize = new Sequelize({
 	storage: 'database.sqlite',
 });
 
-// Initialise the messages table
+// Define the messages table
 const Messages = sequelize.define('messages', {
 	tag: {
 		type: Sequelize.STRING,
 		unique: true,
 	},
 	content: Sequelize.TEXT,
+});
+
+// Define the social media posts table
+const Social = sequelize.define('social', {
+	link: {
+		type: Sequelize.STRING,
+		unique: true,
+	},
+	platform: Sequelize.STRING,
 });
 
 // Load environment variables from .env
@@ -56,10 +65,14 @@ for (const file of eventFiles) {
 	}
 }
 
+const scraping = (process.env.AUTO_SOCIAL_SCRAPING === 'true');
+
 // Save custom data to the client instance
 client.DICED = {
 	database: sequelize,
 	messages_scheme: Messages,
+	social_scheme: Social,
+	youtube_messages: scraping,
 };
 
 // Discord login

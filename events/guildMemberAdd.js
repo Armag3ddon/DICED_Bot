@@ -13,7 +13,7 @@ module.exports = {
 				channel.send(message);
 			}
 			else {
-				DiscordLog(member.client, `Eine neue Person ist beigetreten (${member.user.username}), konnte aber nicht begrüßt werden, da keine Willkommensnachricht eingestellt ist.`);
+				DiscordLog.log(member.client, `Eine neue Person ist beigetreten (${member.user.username}), konnte aber nicht begrüßt werden, da keine Willkommensnachricht eingestellt ist.`);
 				throw 'guildMemberAdd: Missing welcome message.';
 			}
 		}
