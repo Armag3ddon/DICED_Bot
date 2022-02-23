@@ -13,7 +13,7 @@ module.exports = {
 		// The bot will check each minute for new uploads/posts
 		// In theory, this can lead to the bot missing posts when these are posted quicker than in one minute intervals.
 		// That is acceptable.
-		const minute = 6000;
+		const minute = 60000;
 
 		// Check the preset YouTube channel for new video uploads
 		const youtube_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${process.env.YOUTUBE_CHANNEL_ID}`;
