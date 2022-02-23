@@ -1,6 +1,8 @@
 /* A Discord bot for the DICED Discord server.
  * Follows the recommended tutorial:
  * https://discordjs.guide/#before-you-begin
+ *
+ * Permissions: 380373289984
 */
 
 const fs = require('fs');
@@ -9,7 +11,7 @@ const Sequelize = require('sequelize');
 
 const { Client, Collection, Intents } = require('discord.js');
 // New Discord client
-const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_MESSAGES] });
 client.commands = new Collection();
 // Commands are stored in /commands in separate files
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
