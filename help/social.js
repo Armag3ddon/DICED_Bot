@@ -38,7 +38,7 @@ module.exports = {
 								let message = await client.DICED.messages_scheme.findOne({ where: { tag: 'youtube' } });
 								if (message) {
 									const channel = await client.channels.fetch(process.env.NEWS_CHANNEL);
-									message = message.link.replace('%%%', `${entry}`);
+									message = message.content.replace('%%%', `${newest_video}`);
 									channel.send(message);
 								}
 								else {
