@@ -9,7 +9,7 @@ module.exports = {
 			let message = await member.client.DICED.messages_scheme.findOne({ where: { tag: 'willkommen' } });
 			if (message) {
 				const channel = await member.client.channels.fetch(process.env.WELCOME_CHANNEL);
-				message = message.replace('%%%', `<@${member.id}>`);
+				message = message.content.replace('%%%', `<@${member.id}>`);
 				channel.send(message);
 			}
 			else {

@@ -2,7 +2,7 @@
  * Follows the recommended tutorial:
  * https://discordjs.guide/#before-you-begin
  *
- * Permissions: 380373289984
+ * Permissions: 397620276288
 */
 
 const fs = require('fs');
