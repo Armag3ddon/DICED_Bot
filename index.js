@@ -44,6 +44,13 @@ const Social = sequelize.define('social', {
 	platform: Sequelize.STRING,
 });
 
+// Define the weekly challenge posts table
+const Challenge = sequelize.define('challenge', {
+	message: Sequelize.STRING,
+	owner: Sequelize.STRING,
+	confirmed: Sequelize.BOOLEAN,
+});
+
 // Load environment variables from .env
 // Must contain:
 // TOKEN: The Discord API Token
@@ -74,6 +81,7 @@ client.DICED = {
 	database: sequelize,
 	messages_scheme: Messages,
 	social_scheme: Social,
+	challenge_scheme: Challenge,
 	youtube_messages: scraping,
 };
 

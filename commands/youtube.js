@@ -86,7 +86,7 @@ module.exports = {
 						.setLabel(button_label)
 						.setStyle(button_style),
 				);
-			ButtonCollector.collector(
+			ButtonCollector.channelCollector(
 				interaction,
 				{ clicked: on_click_message, clickedLog: log_message },
 				button_id,
@@ -104,7 +104,7 @@ module.exports = {
 						.setLabel('Eintrag löschen')
 						.setStyle('DANGER'),
 				);
-			ButtonCollector.collector(
+			ButtonCollector.channelCollector(
 				interaction,
 				{ clicked: 'Der Eintrag wurde gelöscht.', clickedLog: 'USER hat den letzten YouTube-Video-Eintrag aus der Datenbank gelöscht.' },
 				'youtube_delete',
