@@ -56,7 +56,6 @@ module.exports = {
 					reply += 'Der Bestätigungszeitraum läuft jetzt gerade, die Nachricht ist noch unbestätigt. ';
 				}
 				// Add 7 days to the date to get the time at which the challenge role period ends
-				challenger[i].createdAt.setUTCDate(challenger[i].getUTCDate() + 7);
 				const end_time = challenger[i].createdAt.toString();
 				reply += `Der Eintrag läuft ab am ${end_time}.`;
 				// Check that a single message doesn't exceed the allowed character count.
