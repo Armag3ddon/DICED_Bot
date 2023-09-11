@@ -30,7 +30,13 @@ module.exports = {
 			for (let i = 0; i < challenger.length; i++) {
 				let reply = '';
 				const message = await channel.messages.fetch(challenger[i].message);
-				const member = await interaction.guild.members.fetch(challenger[i].owner);
+				let member;
+				try {
+					member = await interaction.guild.members.fetch(challenger[i].owner);
+				}
+				catch (error) {
+					DiscordLog(interaction.client, 'Folgende Benutzer-ID konnte von Discord nicht abgerufen werden: ' + challenger[i].owner);
+				}
 				if (member) {
 					reply += `@${member.user.username} (ID: ${challenger[i].owner}): `;
 				}
@@ -68,20 +74,35 @@ module.exports = {
 			}
 			return;
 		}
-		// Change the currently implemented welcome message
-		if (interaction.options.getSubcommand() == 'festlegen') {
-			const new_message = interaction.options.getString('nachricht');
+		// Remove a challenge entry
+		if (interaction.options.getSubcommand() == 'loeschen') {
+			const id = interaction.options.getString('id');
+			let reply = `Entferne ${id} aus der Datenbank.\n`;
 			try {
-				const action_taker = interaction.member.user.id;
-				await interaction.client.DICED.messages_scheme.upsert({ tag: 'willkommen', content: new_message });
-				DiscordLog.log(interaction.client, `Die Willkommensnachricht wurde von <@${action_taker}> geändert.`);
-				return interaction.reply({ content: 'Die neue Willkommensnachricht wurde eingetragen.', ephemeral: true });
+				const member = await interaction.guild.members.fetch(id);
+				if (member) {
+					if (member.manageable) {
+						member.roles.remove(process.env.CHALLENGE_ROLE);
+						reply += 'Wochenchallenger-Rolle wurde entfernt.\n';
+					}
+				}
+				else {
+					reply += 'Konnte Wochenchallenger-Rolle nicht entfernen.\n';
+				}
 			}
 			catch (error) {
-				console.error(error);
-				DiscordLog.log(interaction.client, 'Die Willkommensnachricht sollte geändert werden, aber es ist ein Fehler mit der Datenbank aufgetreten.');
-				return interaction.reply({ content: 'Etwas ist beim Eintragen der Willkommensnachricht schief gelaufen.', ephemeral: true });
+				reply += 'Fehler beim Abrufen der Accountinformationen (' + error + ')\n';
 			}
+			const challenger = await interaction.client.DICED.challenge_scheme.findOne({ where: { owner: id } });
+			if (challenger !== null) {
+				await challenger.destroy();
+				reply += 'Datenbankeintrag gelöscht.';
+			}
+			else {
+				reply += 'Datenbankeintrag nicht gefunden.';
+			}
+			interaction.reply(reply);
+			return;
 		}
 		return interaction.reply({ content: 'Irgendwas ist mit dem Befehl schief gelaufen.', ephemeral: true });
 	},
